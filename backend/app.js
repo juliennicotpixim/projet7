@@ -1,7 +1,9 @@
 require('dotenv').config();      // importation du paquet dotenv pour les variables d'environnement
 const express = require('express');     // importation du paquet express
+const bodyParser = require('body-parser');      // importation du paquet body-parser
 const path = require('path');       // importation du paquet node "path" qui donne accès au chemin du système de fichier
 const helmet = require('helmet');     // importation du paquet helmet
+const sanitizeMiddleware = require('sanitize-middleware');      // importation du paquet sanitize middleware
 
 const usersRoutes = require('./routes/users')     // importation du router users
 const publicationsRoutes = require('./routes/publications')     // importation du router publications
@@ -16,6 +18,10 @@ app.use((req, res, next) => {       // middleware général appliqué à toute l
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');        // autorisation d'utiliser certaines méthodes
     next();
 });
+
+app.use(bodyParser.json());     // transforme le corps de la requête en objet javascript utilisable
+
+app.use(sanitizeMiddleware());      // nettoyage des données reçus pour éviter les injections SQL
 
 app.use('/images', express.static(path.join(__dirname, 'images')));   // middleware spécifique qui permet de servir le dossier image lors d'une requête spécifique avec l'image
 

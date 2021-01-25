@@ -1,12 +1,12 @@
 CREATE TABLE `users` (                                                      /* Création de la table USERS */
   `id` int PRIMARY KEY AUTO_INCREMENT,                                      /* Clé primaire => User ID */
   `creation_date` TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP),           /* Date de création du user */
-  `nom` varchar(30) DEFAULT NULL,                                               /* Nom */
-  `prenom` varchar(30) DEFAULT NULL,                                            /* Prénom */
+  `nom` varchar(30) DEFAULT NULL,                                           /* Nom */
+  `prenom` varchar(30) DEFAULT NULL,                                        /* Prénom */
   `email` varchar(60) NOT NULL UNIQUE,                                      /* Email UNIQUE (Pour éviter les doublons) */
   `departement` varchar(30) DEFAULT NULL,                                   /* Département */
   `poste` varchar(30) DEFAULT NULL,                                         /* Poste occupé */
-  `mot_de_passe` varchar(30) NOT NULL,                                      /* Mot de passe */
+  `mot_de_passe` varchar(100) NOT NULL,                                      /* Mot de passe */
   `niveau_acces` int DEFAULT NULL                                           /* Niveau d'accès, rôle, droit */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;     /* Utilisation du moteur de table InnoDB qui permet l'utilisation des clés étrangères */
 
@@ -17,7 +17,7 @@ CREATE TABLE `publications` (                                                   
   `creation_date` TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP),                                             /* Date de création de la publication */
   `titre` text NOT NULL,                                                                                      /* Titre */
   `description` text NOT NULL,                                                                                /* Description */
-  `image_url` text DEFAULT NULL,                                                                                  /* URL de l'image */
+  `image_url` text DEFAULT NULL,                                                                              /* URL de l'image */
   PRIMARY KEY (`id`,`user_id`),                                                                               /* Clé primaire composite => Publication ID + User ID */
   CONSTRAINT `fk_publication_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE     /* Clé étrangère sur la colonne "user_id" qui se sert de la table "users" et de la colonne "id" comme référence */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;                                       /* Utilisation du moteur de table InnoDB qui permet l'utilisation des clés étrangères */
