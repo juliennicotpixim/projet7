@@ -19,19 +19,19 @@ const bdd = mysql.createConnection({
 
 
 // Base de données
-const database = `CREATE DATABASE ${process.env.SQL_BDD_NAME}`;
+const database = `CREATE DATABASE ${process.env.SQL_BDD_NAME};`
 
 // Table des utilisateurs
-const tableUsers = "CREATE TABLE `users` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `creation_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `nom` varchar(30) COLLATE utf8_bin NOT NULL, `prenom` varchar(30) COLLATE utf8_bin NOT NULL, `email` varchar(60) COLLATE utf8_bin NOT NULL UNIQUE, `departement` varchar(30) COLLATE utf8_bin DEFAULT NULL, `poste` varchar(30) COLLATE utf8_bin DEFAULT NULL, `mot_de_passe` varchar(30) COLLATE utf8_bin NOT NULL, `niveau_acces` int DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;";
+const tableUsers = "CREATE TABLE `users` ( `id` int PRIMARY KEY AUTO_INCREMENT, `creation_date` TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP), `nom` varchar(30) DEFAULT NULL, `prenom` varchar(30) DEFAULT NULL, `email` varchar(60) NOT NULL UNIQUE, `departement` varchar(30) DEFAULT NULL, `poste` varchar(30) DEFAULT NULL, `mot_de_passe` varchar(30) NOT NULL, `niveau_acces` int DEFAULT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;";
 
 // Table des publications
-const tablePublications = "CREATE TABLE `publications` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `us_id` int NOT NULL, `creation_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `titre` text COLLATE utf8_bin NOT NULL, `description` text COLLATE utf8_bin NOT NULL, `image_url` text COLLATE utf8_bin NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;"
+const tablePublications = "CREATE TABLE `publications` ( `id` int AUTO_INCREMENT, `user_id` int NOT NULL, `creation_date` TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP), `titre` text NOT NULL, `description` text NOT NULL, `image_url` text DEFAULT NULL, PRIMARY KEY (`id`,`user_id`), CONSTRAINT `fk_publication_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;"
 
 // Table des commentaires
-const tableCommentaires= "CREATE TABLE `commentaires` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `us_id` int NOT NULL, `pu_id` int NOT NULL, `creation_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `message` text COLLATE utf8_bin NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;"
+const tableCommentaires= "CREATE TABLE `commentaires` ( `id` int AUTO_INCREMENT, `user_id` int NOT NULL, `publication_id` int NOT NULL, `creation_date` TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP), `message` text NOT NULL, PRIMARY KEY (`id`, `user_id`, `publication_id`), CONSTRAINT `fk_commentaire_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE, CONSTRAINT `fk_commentaire_publication_id` FOREIGN KEY (`publication_id`) REFERENCES `publications` (`id`) ON DELETE CASCADE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;"
 
 // Table des votes
-const tableVotes = "CREATE TABLE `votes` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `us_id` int NOT NULL, `pu_id` int NOT NULL, `vote` int NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;"
+const tableVotes = "CREATE TABLE `votes` ( `id` int AUTO_INCREMENT, `user_id` int NOT NULL, `publication_id` int NOT NULL, `vote` int NOT NULL, PRIMARY KEY (`id`, `user_id`, `publication_id`), CONSTRAINT `fk_vote_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE, CONSTRAINT `fk_vote_publication_id` FOREIGN KEY (`publication_id`) REFERENCES `publications` (`id`) ON DELETE CASCADE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;"
 
 
 // Création d'une fonction pour séquencer nos différentes création de table
@@ -119,4 +119,3 @@ const launchDatabaseConfig = function() {
   asyncFunction();      // Appel de la fonction asynchrone
 };
 launchDatabaseConfig();  // Appel de la fonction globale
-
