@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');        // importation du paquet jwt
 const bdd = require("../bdd_config/bdd_connexion");     // importation de la connexion a la base de données
 
 
-let decodeToken = function(req){                                              // fonction qui décode le token et récupère le UserID et le niveau d'acces
+let decodeToken = function(req){                                                    // fonction qui décode le token et récupère le UserID et le niveau d'acces
     let token = req.headers.authorization.split(' ')[1];                            // on récupère uniquement le token du header de la requête
     let decodedToken = jwt.verify(token, process.env.JWT_AUTH_SECRET_TOKEN);        // on décode le token avec la fonction verify qui prend le token et la clé secrète
     decodedToken = [decodedToken.userId, decodedToken.niveau_acces];                // on récupère le niveau d'acces du token décodé
@@ -61,11 +61,11 @@ exports.login = (req, res, next) => {
 
     if (validator.isEmail(String(email))) {
 
-        let sql= "SELECT id, email, mot_de_passe, niveau_acces FROM users WHERE email = ?";
-        let inserts = [email];
-        sql = mysql.format(sql, inserts);
+        let sql= "SELECT id, email, mot_de_passe, niveau_acces FROM users WHERE email = ?";     // préparation de la requete SQL
+        let inserts = [email];                                                                  // utilisation des valeurs à insérer
+        sql = mysql.format(sql, inserts);                                                       // assemblage final de la requête
 
-        const userLogin = bdd.query(sql, (error, user) => {
+        const userLogin = bdd.query(sql, (error, user) => {                             // envoi de la requête a la base de données
             if (error) {                                                                // si aucune correspondance avec un utilisateur n'a été trouvée
                 return res.status(400).json({ error : "Votre email est invalide !" })   // l'email est donc invalide
             }
@@ -95,22 +95,21 @@ exports.login = (req, res, next) => {
 
 exports.getOneUser = (req, res, next) => {
 
-    const tokenInfos = decodeToken(req);
-    const userId = tokenInfos[0];
+    const tokenInfos = decodeToken(req);        // on utilise la fonction decodeToken
+    const userId = tokenInfos[0];               // on obtient le UserId du token
 
     if (userId === Number(req.params.id)) {
-        let sql = "SELECT nom, prenom, email, departement, poste FROM users WHERE id = ?";
-        let inserts = [userId];
-        sql = mysql.format(sql, inserts);
+        let sql = "SELECT nom, prenom, email, departement, poste FROM users WHERE id = ?";  // préparation de la requete SQL
+        let inserts = [userId];                                                             // utilisation des valeurs à insérer
+        sql = mysql.format(sql, inserts);                                                   // assemblage final de la requête
 
         const userGetInfos = bdd.query(sql, (error, result) => {
             if (error) {
-                res.status(401).json({ error: "Une erreur est survenue, utilisateur non trouvé !" });
+                res.status(401).json({ error: "Une erreur est survenue, utilisateur non trouvé !" });          // utilisateur introuvable
             }
             if (result.length === 0) {
                 res.status(400).json({ error: "Une erreur est survenue, utilisateur non trouvé !" })           // utilisateur introuvable
             } else {
-                console.log(result)
                 res.status(200).json(result[0]);
             }
         });
@@ -153,7 +152,7 @@ exports.updateOneUser = (req, res, next) => {
 
             const userGetPassword = bdd.query(sql, (error, result) => {
                 if (error) {                                                                                            // si aucune correspondance avec un utilisateur n'a été trouvée
-                    res.status(400).json({ error: "Une erreur est survenue, utilisateur non trouvé !" })              // utilisateur introuvable
+                    res.status(400).json({ error: "Une erreur est survenue, utilisateur non trouvé !" })                // utilisateur introuvable
                 }
                 if (result.length === 0) {
                     res.status(400).json({ error: "Une erreur est survenue, utilisateur non trouvé !" })              // utilisateur introuvable
@@ -198,9 +197,6 @@ exports.deleteOneUser = (req, res, next) => {
         const userDelete = bdd.query(sql, (error, result) => {
             if (error) {
                 res.status(401).json({ error: "Une erreur est survenue, utilisateur non trouvé !" });
-            }
-            if (result.length === 0) {
-                res.status(400).json({ error: "Une erreur est survenue, utilisateur non trouvé !" })           // utilisateur introuvable
             } else {
                 res.status(200).json({ message: "Utilisateur supprimé avec succès !" });
             }

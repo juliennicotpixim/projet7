@@ -39,7 +39,7 @@ CREATE TABLE `votes` (                                                          
   `id` int AUTO_INCREMENT,                                                                                                  /* Vote ID */
   `user_id` int NOT NULL,                                                                                                   /* User ID créateur du vote */
   `publication_id` int NOT NULL,                                                                                            /* Publication ID lié au vote */
-  `vote` int NOT NULL,                                                                                                      /* Vote */
+  `vote` int DEFAULT NULL,                                                                                                      /* Vote */
   PRIMARY KEY (`id`, `user_id`, `publication_id`),                                                                          /* Clé primaire composite => Vote ID + Publication ID + User ID */
   CONSTRAINT `fk_vote_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,                         /* Clé étrangère sur la colonne "user_id" qui se sert de la table "users" et de la colonne "id" comme référence */
   CONSTRAINT `fk_vote_publication_id` FOREIGN KEY (`publication_id`) REFERENCES `publications` (`id`) ON DELETE CASCADE     /* Clé étrangère sur la colonne "publication_id" qui se sert de la table "publications" et de la colonne "id" comme référence */

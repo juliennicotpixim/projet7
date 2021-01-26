@@ -18,7 +18,7 @@ const storage = multer.diskStorage({                    // fonction de multer qu
     }
 });
 
-module.exports = multer({ storage: storage,
+module.exports = multer({ storage: storage,                     // méthode multer a laquelle on passe notre objet Storage et méthode single pour préciser un seul fichier image
     fileFilter: function (req, file, callback) {
         var ext = path.extname(file.originalname);
         if(ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg') {
@@ -26,4 +26,4 @@ module.exports = multer({ storage: storage,
         }
         callback(null, true)
     }
-}).single('image');       // méthode multer a laquelle on passe notre objet Storage et méthode single pour préciser un seul fichier image
+}).single('image');       
