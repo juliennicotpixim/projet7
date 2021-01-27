@@ -150,7 +150,7 @@ exports.deleteComment = (req, res, next) => {
 
         const commentaireDelete = bdd.query(sql, (error, result) => {               // envoi de la requête a la base de données
             if (!error) {
-                res.status(200).json({ message: "Le commentaire a été supprimé !" + " (" + role + ")" });
+                res.status(200).json({ message: "Le commentaire a été supprimé !" + " (" + role + " )" });
             } else {
                 res.status(500).json({ message: "Une erreur est survenue, le commentaire n'a pas été supprimé" });
             }
@@ -168,9 +168,9 @@ exports.votePublication = (req, res, next) => {
     const alreadyVote = req.body.alreadyVote;                           // on récupère l'info si l'utilisateur a déjà voté la publication
 
     switch (vote) {
-        case 0 : // Vote null sur la publication (No like/ No dislike)
+        case 1 : // Vote null sur la publication (No like/ No dislike)
             try {
-                let sql = "UPDATE votes SET vote = 0 WHERE publication_id = ? AND user_id = ?";     // préparation de la requete SQL
+                let sql = "UPDATE votes SET vote = 1 WHERE publication_id = ? AND user_id = ?";     // préparation de la requete SQL
                 let inserts = [publicationId, userId];                                              // utilisation des valeurs à insérer
                 sql = mysql.format(sql, inserts);                                                   // assemblage final de la requête
 
@@ -186,10 +186,10 @@ exports.votePublication = (req, res, next) => {
             }
             break;
 
-        case 1 : // Vote like sur la publication
+        case 2 : // Vote like sur la publication
             try {
                 if (alreadyVote) {                                                                      // si l'utilisateur a déjà voté sur cette publication
-                    let sql = "UPDATE votes SET vote = 1 WHERE publication_id = ? AND user_id = ?";     // préparation de la requete SQL
+                    let sql = "UPDATE votes SET vote = 2 WHERE publication_id = ? AND user_id = ?";     // préparation de la requete SQL
                     let inserts = [publicationId, userId];                                              // utilisation des valeurs à insérer
                     sql = mysql.format(sql, inserts);                                                   // assemblage final de la requête
 
@@ -201,7 +201,7 @@ exports.votePublication = (req, res, next) => {
                         }
                     });
                 } else {
-                    let sql = "INSERT INTO votes (publication_id, user_id, vote) VALUES (?, ?, 1)";     // préparation de la requete SQL
+                    let sql = "INSERT INTO votes (publication_id, user_id, vote) VALUES (?, ?, 2)";     // préparation de la requete SQL
                     let inserts = [publicationId, userId];                                              // utilisation des valeurs à insérer
                     sql = mysql.format(sql, inserts);                                                   // assemblage final de la requête
 
@@ -218,10 +218,10 @@ exports.votePublication = (req, res, next) => {
             }
             break;
 
-        case 2 : // Vote dislike sur la publication
+        case 3 : // Vote dislike sur la publication
             try {
                 if (alreadyVote) {                                                                      // si l'utilisateur a déjà voté sur cette publication
-                    let sql = "UPDATE votes SET vote = 2 WHERE publication_id = ? AND user_id = ?";     // préparation de la requete SQL
+                    let sql = "UPDATE votes SET vote = 3 WHERE publication_id = ? AND user_id = ?";     // préparation de la requete SQL
                     let inserts = [publicationId, userId];                                              // utilisation des valeurs à insérer
                     sql = mysql.format(sql, inserts);                                                   // assemblage final de la requête
 
@@ -233,7 +233,7 @@ exports.votePublication = (req, res, next) => {
                         }
                     });
                 } else {
-                    let sql = "INSERT INTO votes (publication_id, user_id, vote) VALUES (?, ?, 2)";     // préparation de la requete SQL
+                    let sql = "INSERT INTO votes (publication_id, user_id, vote) VALUES (?, ?, 3)";     // préparation de la requete SQL
                     let inserts = [publicationId, userId];                                              // utilisation des valeurs à insérer
                     sql = mysql.format(sql, inserts);                                                   // assemblage final de la requête
 
