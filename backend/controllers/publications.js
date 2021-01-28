@@ -19,20 +19,20 @@ exports.createPublication = (req, res, next) => {
     const tokenInfos = decodeToken(req);        // on utilise la fonction decodeToken
     const userId = tokenInfos[0];               // on obtient le UserId du token
 
-    const titre = req.body.titre;
-    const description = req.body.description;
+    const titre = req.body.titre;               // on récupère le titre de la publication
+    const description = req.body.description;   // on récupère la description de la publication
 
-    if (req.file !== undefined) {                                                           // si une image est trouvée
-        const imageUrl = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`;  // on paramètre son url
+    if (req.file !== undefined) {                                                               // si une image est trouvée
+        const imageUrl = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`;    // on paramètre son url
     }
 
     const imageUrl = "";  // si aucune image alors on laisse le champ vide
 
-    let sql = "INSERT INTO publications (user_id, titre, description, image_url) VALUES (?, ?, ?, ? )";    // préparation de la requete SQL
-    let inserts = [userId, titre, description, imageUrl];                                           // utilisation des valeurs à insérer
-    sql = mysql.format(sql, inserts);                                                               // assemblage final de la requête
+    let sql = "INSERT INTO publications (user_id, titre, description, image_url) VALUES (?, ?, ?, ? )";     // préparation de la requete SQL
+    let inserts = [userId, titre, description, imageUrl];                                                   // utilisation des valeurs à insérer
+    sql = mysql.format(sql, inserts);                                                                       // assemblage final de la requête
 
-    const publicationCreate = bdd.query(sql, (error, publication) => {                               // envoi de la requête a la base de données
+    const publicationCreate = bdd.query(sql, (error, publication) => {                                      // envoi de la requête a la base de données
         if (!error) {
             res.status(201).json({ message: "Publication enregistrée" });
         } else {
@@ -45,14 +45,10 @@ exports.getAllPublications = (req, res, next) => {
 
     const tokenInfos = decodeToken(req);        // on utilise la fonction decodeToken
     const userId = tokenInfos[0];               // on obtient le UserId du token
-    const page = req.query.page;                // on récupère le numéro de la page
-    let offset = 10;
+    const page = req.query.page;                // on récupère le numéro de la page (la première page est la page 1)
+    let offset = 10;                            // offset par défaut sur 10 (limite du nombre de publication et décalage de l'offset)
 
-    if (page == 1) {
-        offset = 0;
-    } else {
-        offset = offset * page;
-    }
+    offset = offset * (page - 1);               // on multipli l'offset par le numéro de la page -1
 
     let sql = `SELECT   user.id AS publicationCreateByUserId,
                         user.nom AS publicationCreateByUserNom,
@@ -86,9 +82,6 @@ exports.getAllPublications = (req, res, next) => {
     const getPublications = bdd.query(sql, (error, publications) => {
         if (error) {
             res.status(401).json({ error: "Une erreur est survenue, aucune publication trouvée !" });
-        }
-        if (publications.length === 0) {
-            res.status(400).json({ error: "Une erreur est survenue, aucune publication trouvée !" })
         } else {
             res.status(200).json(publications);
         }
@@ -99,14 +92,10 @@ exports.getMostRecentPublications = (req, res, next) => {
 
     const tokenInfos = decodeToken(req);        // on utilise la fonction decodeToken
     const userId = tokenInfos[0];               // on obtient le UserId du token
-    const page = req.query.page;                // on récupère le numéro de la page
-    let offset = 10;
+    const page = req.query.page;                // on récupère le numéro de la page (la première page est la page 1)
+    let offset = 10;                            // offset par défaut sur 10 (limite du nombre de publication et décalage de l'offset)
 
-    if (page == 1) {
-        offset = 0;
-    } else {
-        offset = offset * page;
-    }
+    offset = offset * (page - 1);               // on multipli l'offset par le numéro de la page -1
 
     let sql = `SELECT   user.id AS publicationCreateByUserId,
                         user.nom AS publicationCreateByUserNom,
@@ -140,9 +129,6 @@ exports.getMostRecentPublications = (req, res, next) => {
     const getPublications = bdd.query(sql, (error, publications) => {
         if (error) {
             res.status(401).json({ error: "Une erreur est survenue, aucune publication trouvée !" });
-        }
-        if (publications.length === 0) {
-            res.status(400).json({ error: "Une erreur est survenue, aucune publication trouvée !" })
         } else {
             res.status(200).json(publications);
         }
@@ -153,14 +139,10 @@ exports.getMostLikedPublications = (req, res, next) => {
 
     const tokenInfos = decodeToken(req);        // on utilise la fonction decodeToken
     const userId = tokenInfos[0];               // on obtient le UserId du token
-    const page = req.query.page;                // on récupère le numéro de la page
-    let offset = 10;
+    const page = req.query.page;                // on récupère le numéro de la page (la première page est la page 1)
+    let offset = 10;                            // offset par défaut sur 10 (limite du nombre de publication et décalage de l'offset)
 
-    if (page == 1) {
-        offset = 0;
-    } else {
-        offset = offset * page;
-    }
+    offset = offset * (page - 1);               // on multipli l'offset par le numéro de la page -1
 
     let sql = `SELECT   user.id AS publicationCreateByUserId,
                         user.nom AS publicationCreateByUserNom,
@@ -194,9 +176,6 @@ exports.getMostLikedPublications = (req, res, next) => {
     const getPublications = bdd.query(sql, (error, publications) => {
         if (error) {
             res.status(401).json({ error: "Une erreur est survenue, aucune publication trouvée !" });
-        }
-        if (publications.length === 0) {
-            res.status(400).json({ error: "Une erreur est survenue, aucune publication trouvée !" })
         } else {
             res.status(200).json(publications);
         }
@@ -207,14 +186,10 @@ exports.getMostCommentedPublications = (req, res, next) => {
 
     const tokenInfos = decodeToken(req);        // on utilise la fonction decodeToken
     const userId = tokenInfos[0];               // on obtient le UserId du token
-    const page = req.query.page;                // on récupère le numéro de la page
-    let offset = 10;
+    const page = req.query.page;                // on récupère le numéro de la page (la première page est la page 1)
+    let offset = 10;                            // offset par défaut sur 10 (limite du nombre de publication et décalage de l'offset)
 
-    if (page == 1) {
-        offset = 0;
-    } else {
-        offset = offset * page;
-    }
+    offset = offset * (page - 1);               // on multipli l'offset par le numéro de la page -1
 
     let sql = `SELECT   user.id AS publicationCreateByUserId,
                         user.nom AS publicationCreateByUserNom,
@@ -248,9 +223,6 @@ exports.getMostCommentedPublications = (req, res, next) => {
     const getPublications = bdd.query(sql, (error, publications) => {
         if (error) {
             res.status(401).json({ error: "Une erreur est survenue, aucune publication trouvée !" });
-        }
-        if (publications.length === 0) {
-            res.status(400).json({ error: "Une erreur est survenue, aucune publication trouvée !" })
         } else {
             res.status(200).json(publications);
         }
@@ -303,7 +275,7 @@ exports.getOnePublication = (req, res, next) => {
 
     const tokenInfos = decodeToken(req);        // on utilise la fonction decodeToken
     const userId = tokenInfos[0];               // on obtient le UserId du token
-    const publicationId = req.params.id;
+    const publicationId = req.params.id;        // récupération de l'ID de la publication
 
     let sqlPublication = `SELECT    user.id AS publicationCreateByUserId,
                                     user.nom AS publicationCreateByUserNom,
@@ -348,11 +320,9 @@ exports.getOnePublication = (req, res, next) => {
     const getOnePublication = bdd.query(sql, (error, publication) => {
         if (!error) {
             res.status(200).json(publication);
-        } if (publication.length === 0) {
-            res.status(400).json({ error: "Une erreur est survenue, aucune publication trouvée !" })
         } else {
             res.status(401).json({ error: "Une erreur est survenue, aucune publication trouvée !" });
-        }
+        } 
     });
 };
 

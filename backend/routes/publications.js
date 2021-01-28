@@ -7,7 +7,7 @@ const auth = require('../middleware/auth');      // importation de notre middlew
 const multer = require('../middleware/multer-config');       // importation de notre middleware multer
 
 
-router.post('/', auth, publicationsCtrl.createPublication);                     // Création d'une publication
+router.post('/', auth, publicationsCtrl.createPublication);                             // Création d'une publication
 
 router.get("/", auth, publicationsCtrl.getAllPublications);                             // Récupération de toutes les publications
 
@@ -27,7 +27,7 @@ router.post('/commentaire', auth, publicationsCtrl.commentPublication);         
 
 router.delete("/commentaire/:id", auth, publicationsCtrl.deleteComment);                // Suppression d'un commentaire
 
-router.post('/vote', auth, publicationsCtrl.votePublication);                           // Modification d'un vote (like/dislike)
+router.post('/vote', auth, publicationsCtrl.votePublication);                           // Modification d'un vote (like/dislike/null)
 
 
 module.exports = router;        // on export le router du fichier

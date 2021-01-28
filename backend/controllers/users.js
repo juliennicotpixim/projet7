@@ -74,8 +74,8 @@ exports.login = (req, res, next) => {
             }
 
             bcrypt.compare(password, user[0].mot_de_passe).then((valid) => {                // si une correspondance avec un utilisateur a été trouvée alors on vérifie le mot de passe
-                if (!valid) {                                                           // si les deux mots de passes ne correspondent pas
-                    return res.status(401).json({ error : "Mot de passe invalide !"})   // le mot de passe est donc invalide
+                if (!valid) {                                                               // si les deux mots de passes ne correspondent pas
+                    return res.status(401).json({ error : "Mot de passe invalide !"})       // le mot de passe est donc invalide
                 }
 
                 res.status(200).json({                                                  // si la connexion est approuvée on retourne
@@ -103,7 +103,7 @@ exports.getOneUser = (req, res, next) => {
         let inserts = [userId];                                                             // utilisation des valeurs à insérer
         sql = mysql.format(sql, inserts);                                                   // assemblage final de la requête
 
-        const userGetInfos = bdd.query(sql, (error, result) => {
+        const userGetInfos = bdd.query(sql, (error, result) => {                            // envoi de la requête a la base de données
             if (error) {
                 res.status(401).json({ error: "Une erreur est survenue, utilisateur non trouvé !" });          // utilisateur introuvable
             }
@@ -120,8 +120,8 @@ exports.getOneUser = (req, res, next) => {
 
 exports.updateOneUser = (req, res, next) => { 
 
-    const tokenInfos = decodeToken(req);
-    const userId = tokenInfos[0];
+    const tokenInfos = decodeToken(req);            // on utilise la fonction decodeToken
+    const userId = tokenInfos[0];                   // on obtient le UserId du token
    
     const nom = req.body.nom;
     const prenom = req.body.prenom;
@@ -131,14 +131,14 @@ exports.updateOneUser = (req, res, next) => {
     const password = req.body.password;
     const newpassword = req.body.newpassword;
 
-    if (validator.isEmail(String(email))) {
+    if (validator.isEmail(String(email))) {     // si le format de l'email est valide
 
-        if(!password & !newpassword) {
-            let sql = "UPDATE users SET nom = ?, prenom = ?, email = ?, departement = ?, poste = ? WHERE id = ?";
-            let inserts = [nom, prenom, email, departement, poste, userId];
-            sql = mysql.format(sql, inserts);
+        if(!password & !newpassword) {                                                                                  // si les deux mots de passe sont vides
+            let sql = "UPDATE users SET nom = ?, prenom = ?, email = ?, departement = ?, poste = ? WHERE id = ?";       // préparation de la requete SQL
+            let inserts = [nom, prenom, email, departement, poste, userId];                                             // utilisation des valeurs à insérer
+            sql = mysql.format(sql, inserts);                                                                           // assemblage final de la requête
 
-            const userUpdateWithoutNewPassword = bdd.query(sql, (error, result) => {
+            const userUpdateWithoutNewPassword = bdd.query(sql, (error, result) => {                                    // envoi de la requête a la base de données
                 if (error) {
                     res.status(401).json({ error: "La mise à jour des informations de l'utilisateur a échoué" });
                 } else {
@@ -146,20 +146,20 @@ exports.updateOneUser = (req, res, next) => {
                 }
             });
         } else {
-            let sql= "SELECT mot_de_passe FROM users WHERE id = ?";
-            let inserts = [userId];
-            sql = mysql.format(sql, inserts);
+            let sql= "SELECT mot_de_passe FROM users WHERE id = ?";                                                     // préparation de la requete SQL
+            let inserts = [userId];                                                                                     // utilisation des valeurs à insérer
+            sql = mysql.format(sql, inserts);                                                                           // assemblage final de la requête
 
             const userGetPassword = bdd.query(sql, (error, result) => {
                 if (error) {                                                                                            // si aucune correspondance avec un utilisateur n'a été trouvée
                     res.status(400).json({ error: "Une erreur est survenue, utilisateur non trouvé !" })                // utilisateur introuvable
                 }
                 if (result.length === 0) {
-                    res.status(400).json({ error: "Une erreur est survenue, utilisateur non trouvé !" })              // utilisateur introuvable
+                    res.status(400).json({ error: "Une erreur est survenue, utilisateur non trouvé !" })                // utilisateur introuvable
                 } else {
                     bcrypt.compare(password, result[0].mot_de_passe).then((valid) => {                  // si une correspondance avec un utilisateur a été trouvée alors on vérifie le mot de passe
                         if (!valid) {                                                                   // si les deux mots de passes ne correspondent pas
-                            res.status(400).json({ error : "Mot de passe actuel invalide !" })                 // le mot de passe est donc invalide
+                            res.status(400).json({ error : "Mot de passe actuel invalide !" })          // le mot de passe est donc invalide
                         } else {
                             bcrypt.hash(newpassword, 10, (error, hash) => {
                                 let sql = "UPDATE users SET nom = ?, prenom = ?, email = ?, departement = ?, poste = ?, mot_de_passe = ? WHERE id = ?";
@@ -186,10 +186,10 @@ exports.updateOneUser = (req, res, next) => {
 
 exports.deleteOneUser = (req, res, next) => {
     
-    const tokenInfos = decodeToken(req);
-    const userId = tokenInfos[0];
+    const tokenInfos = decodeToken(req);        // on utilise la fonction decodeToken
+    const userId = tokenInfos[0];               // on obtient le UserId du token
    
-    if (userId === Number(req.params.id)) {
+    if (userId === Number(req.params.id)) {     // on vérifie que le UserId du token
         let sql = "DELETE FROM users WHERE id = ? ";
         let inserts = [userId];
         sql = mysql.format(sql, inserts);
