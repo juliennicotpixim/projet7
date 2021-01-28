@@ -23,9 +23,9 @@ router.get("/:id", auth, publicationsCtrl.getOnePublication);                   
 
 router.delete("/:id", auth, publicationsCtrl.deletePublication);                        // Suppresion d'une publication
 
-router.post('/commentaire', auth, publicationsCtrl.commentPublication);                     // Création d'un commentaire
+router.post('/commentaire', auth, publicationsCtrl.commentPublication);                 // Création d'un commentaire
 
-router.delete("/commentaire/:id", auth, publicationsCtrl.deleteComment);                    // Suppression d'un commentaire
+router.delete("/commentaire/:id", auth, publicationsCtrl.deleteComment);                // Suppression d'un commentaire
 
 router.post('/vote', auth, publicationsCtrl.votePublication);                           // Modification d'un vote (like/dislike)
 

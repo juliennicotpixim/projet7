@@ -19,6 +19,7 @@ app.use((req, res, next) => {       // middleware général appliqué à toute l
     next();
 });
 
+app.use(bodyParser.urlencoded({ extended: false }));        // URL-encoded data with the "querystring" library 
 app.use(bodyParser.json());     // transforme le corps de la requête en objet javascript utilisable
 
 app.use(sanitizeMiddleware());      // nettoyage des données reçus pour éviter les injections SQL

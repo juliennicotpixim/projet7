@@ -1,0 +1,29 @@
+{
+	userId: nombre,
+	userNom: string,
+	userPrenom: string,
+	userVote: nombre,
+	publicationId: nombre,
+	publicationCreationDate: date,
+	publicationTitre: string,
+	publicationDescription: string,
+	publicationImageUrl: string,
+	publicationLikeCount: nombre,
+	publicationDislikeCount: nombre,
+	publicationCommentaireCount: nombre
+}
+
+{
+	publicationCreateByUserId: nombre,
+    	publicationCreateByUserNom: string ou null,
+    	publicationCreateByUserPrenom: string null,
+    	publicationId: nombre,
+    	publicationCreationDate: string,
+    	publicationTitre: string,
+    	publicationDescription: string,
+    	publicationImageUrl: string,
+  	publicationLikeCount: nombre,
+   	publicationDislikeCount: nombre,
+  	publicationCommentCount: nombre,
+   	userVote: nombre ou null
+}
