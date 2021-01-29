@@ -12,9 +12,7 @@
 
             <div class="container-button mx-auto mt-6 mb-15">
               <button id="login" type="submit" class="mx-5">Connexion</button>
-              <router-link to="/signup">
-                <button id="signup" class="mx-5">Inscription</button>
-              </router-link>
+              <router-link to="/signup" id="signup" class="mx-5" tag="button">Inscription</router-link>
             </div>
         </form>
     </div>
@@ -30,7 +28,8 @@
       background-image: url(../assets/background-white.jpg);
       background-size: cover;
       background-position: center;
-      height: 100vh;
+      background-attachment: fixed;
+      min-height: 100vh;
     }
 
     .container{

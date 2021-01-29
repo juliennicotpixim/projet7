@@ -12,6 +12,6 @@ export default {
   name: 'Signup',
   components: {
     Signup
-  }
+  },
 }
 </script>
