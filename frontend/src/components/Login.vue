@@ -3,16 +3,16 @@
     <div class="container mx-auto">
         <img src="../assets/icon-above-font.svg" alt="Groupomania logo">
         
-        <form>
+        <form @submit.prevent = login()>
             <div class="mb-2">Champs requis (*)</div>
-            <input id="email" type="email" placeholder="E-mail (*)" required>
-            <input id="password" type="password" placeholder="Mot de passe (*)" required>
+            <input id="email" ref="email" type="email" placeholder="E-mail (*)" required>
+            <input id="password" ref="password" type="password" placeholder="Mot de passe (*)" required>
 
             <div class="message-erreur">{{ message }}</div>
 
             <div class="container-button mx-auto mt-6 mb-15">
               <button id="login" type="submit" class="mx-5">Connexion</button>
-              <router-link to="/signup" id="signup" class="mx-5" tag="button">Inscription</router-link>
+              <router-link :to="{name:'Signup'}" id="signup" class="mx-5" tag="button">Inscription</router-link>
             </div>
         </form>
     </div>
@@ -20,7 +20,43 @@
 </template>
 
 <script>
-  // a écrire
+import {notConnectedClient} from "@/services/auth.js"
+
+  export default {
+    name: 'Login',
+
+    data() {
+        return {
+            message: "",
+        };
+    },
+
+    methods: {
+        login() {
+            const email = this.$refs.email.value;
+            const password = this.$refs.password.value;
+
+            notConnectedClient.post("/users/login", {
+                email,
+                password
+              })
+              .then((res) => {
+                if(res.status === 200) {
+                    const groupomaniaUser = {
+                      userId: res.data.userId,
+                      niveau_acces: res.data.niveau_acces,
+                      token: res.data.token
+                    }
+                    localStorage.setItem('groupomaniaUser', JSON.stringify(groupomaniaUser));
+                    location.reload();
+                }
+              })
+              .catch((error) => {
+                    this.message = error.response.data.error;
+              })
+        }
+    }
+}
 </script>
 
 <style scoped>

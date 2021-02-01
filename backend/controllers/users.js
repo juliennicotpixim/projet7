@@ -44,7 +44,7 @@ exports.signup = (req, res, next) => {
                             )
                         });
                     } else {
-                        return res.status(400).json({ error : "Cet utilisateur existe déjà"})      // erreur utilisateur déjà existant
+                        return res.status(409).json({ error : "Cet utilisateur existe déjà !"})      // erreur utilisateur déjà existant
                     }
                 });
             });
@@ -75,7 +75,7 @@ exports.login = (req, res, next) => {
 
             bcrypt.compare(password, user[0].mot_de_passe).then((valid) => {                // si une correspondance avec un utilisateur a été trouvée alors on vérifie le mot de passe
                 if (!valid) {                                                               // si les deux mots de passes ne correspondent pas
-                    return res.status(401).json({ error : "Mot de passe invalide !"})       // le mot de passe est donc invalide
+                    return res.status(400).json({ error : "Mot de passe invalide !"})       // le mot de passe est donc invalide
                 }
 
                 res.status(200).json({                                                  // si la connexion est approuvée on retourne
@@ -105,7 +105,7 @@ exports.getOneUser = (req, res, next) => {
 
         const userGetInfos = bdd.query(sql, (error, result) => {                            // envoi de la requête a la base de données
             if (error) {
-                res.status(401).json({ error: "Une erreur est survenue, utilisateur non trouvé !" });          // utilisateur introuvable
+                res.status(400).json({ error: "Une erreur est survenue, utilisateur non trouvé !" });          // utilisateur introuvable
             }
             if (result.length === 0) {
                 res.status(400).json({ error: "Une erreur est survenue, utilisateur non trouvé !" })           // utilisateur introuvable
@@ -140,7 +140,7 @@ exports.updateOneUser = (req, res, next) => {
 
             const userUpdateWithoutNewPassword = bdd.query(sql, (error, result) => {                                    // envoi de la requête a la base de données
                 if (error) {
-                    res.status(401).json({ error: "La mise à jour des informations de l'utilisateur a échoué" });
+                    res.status(400).json({ error: "La mise à jour des informations de l'utilisateur a échoué" });
                 } else {
                     res.status(200).json({ message: "Informations utilisateur mises à jour avec succès !" });
                 }
@@ -168,7 +168,7 @@ exports.updateOneUser = (req, res, next) => {
 
                                 const userUpdateWithNewPassword = bdd.query(sql, (error, result) => {
                                     if (error) {
-                                        res.status(401).json({ error: "La mise à jour des informations de l'utilisateur a échoué" });
+                                        res.status(400).json({ error: "La mise à jour des informations de l'utilisateur a échoué" });
                                     } else {
                                         res.status(200).json({ message: "Informations et nouveau mot de passe utilisateur mis à jour avec succès !" });
                                     }
@@ -196,12 +196,12 @@ exports.deleteOneUser = (req, res, next) => {
 
         const userDelete = bdd.query(sql, (error, result) => {
             if (error) {
-                res.status(401).json({ error: "Une erreur est survenue, utilisateur non trouvé !" });
+                res.status(400).json({ error: "Une erreur est survenue, utilisateur non trouvé !" });
             } else {
                 res.status(200).json({ message: "Utilisateur supprimé avec succès !" });
             }
         });
     } else {
-        res.status(401).json({ error: "Action non autorisée !" });
+        res.status(400).json({ error: "Action non autorisée !" });
     }
 };

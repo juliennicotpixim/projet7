@@ -5,7 +5,7 @@ module.exports = (req, res, next) => {
         next();
     } else {         // sinon si newpassword comporte des caractères
         if (!passwordSchema.validate(req.body.newpassword)) {           // si le mot de passe ne valide pas le schema
-            res.status(401).json({ error: "Format du nouveau mot de passe incorrect, [Longueur minimun : 8 caractères] [Doit avoir au moins une majuscule] [Doit avoir au moins une minuscule] [Doit avoir au moins un chiffre] [Espaces non acceptés]" });
+            res.status(400).json({ error: "Format du nouveau mot de passe incorrect, [Longueur minimun : 8 caractères] [Doit avoir au moins une majuscule] [Doit avoir au moins une minuscule] [Doit avoir au moins un chiffre] [Espaces non acceptés]" });
         } else {
             next();
         }

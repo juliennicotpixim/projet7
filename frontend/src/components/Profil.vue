@@ -1,23 +1,22 @@
 <template>
   <div class="background">
-    <div class="container mx-auto">
-        <img src="../assets/icon-above-font.svg" alt="Groupomania logo">
-        
+    <div class="container mx-auto pt-10">
         <form>
-            <div class="mb-2">Champs requis (*)</div>
+            <div class="mb-4 font-weight-bold mx-auto">Mon profil :</div>
             <input id="nom" type="text" placeholder="Nom">
             <input id="prenom" type="text" placeholder="Prénom">
             <input id="email" type="email" placeholder="E-mail (*)" required>
             <input id="departement" type="text" placeholder="N° de département">
             <input id="poste" type="text" placeholder="Poste occupé">
-            <input id="password" type="password" placeholder="Mot de passe (*)" required>
-            <input id="confirmedpassword" type="password" placeholder="Confirmer mot de passe (*)" required>
+            <div class="mb-4 font-weight-bold mx-auto mt-8">Modifier mon mot de passe :</div>
+            <input id="password" type="password" placeholder="Mot de passe actuel" required>
+            <input id="confirmedpassword" type="password" placeholder="Nouveau mot de passe" required>
 
             <div class="message-erreur">{{ message }}</div>
 
-            <div class="container-button mx-auto mt-6 mb-15">
-              <button id="signup" type="submit" class="mx-5">Inscription</button>
-              <router-link to="/" id="login" tag="button" class="mx-5">Connexion</router-link>
+            <div class="container-button mx-auto mt-10 mb-15">
+              <button id="sauvegarder" type="submit" class="mx-auto my-5">Sauvegarder mon profil</button>
+              <button to="/" id="supprimer" tag="button" class="mx-auto my-5">Supprimer mon compte</button>
             </div>
         </form>
     </div>
@@ -64,35 +63,36 @@
 
     .container-button{
           display: flex;
+          flex-direction: column;
           justify-content: space-around;
           align-items: baseline;
     }
 
-    #signup{
+    #sauvegarder{
         padding: 6px 12px;
         font-size: 1.5rem;
         color: black;
-        background-color: #fe7d55;
+        background-color: #00b126cb;
         border: none;
         border-radius: 10px;
         transition-duration: 0.2s;
     }
 
-    #signup:hover{
+    #sauvegarder:hover{
         transform: scale(1.1);
     }
 
-    #login{
+    #supprimer{
         padding: 6px 12px;
         font-size: 1rem;
         color: black;
-        background-color: #ffb49d;
+        background-color: #ff6c40;
         border: none;
         border-radius: 10px;
         transition-duration: 0.2s;
     }
 
-    #login:hover{
+    #supprimer:hover{
         transform: scale(1.1);
     }
     

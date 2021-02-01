@@ -36,7 +36,7 @@ exports.createPublication = (req, res, next) => {
         if (!error) {
             res.status(201).json({ message: "Publication enregistrée" });
         } else {
-            res.status(500).json({ message: "Une erreur est survenue, la publication n'a pas été créée" });
+            res.status(400).json({ message: "Une erreur est survenue, la publication n'a pas été créée" });
         }
     });
 };
@@ -81,7 +81,7 @@ exports.getAllPublications = (req, res, next) => {
 
     const getPublications = bdd.query(sql, (error, publications) => {
         if (error) {
-            res.status(401).json({ error: "Une erreur est survenue, aucune publication trouvée !" });
+            res.status(400).json({ error: "Une erreur est survenue, aucune publication trouvée !" });
         } else {
             res.status(200).json(publications);
         }
@@ -128,7 +128,7 @@ exports.getMostRecentPublications = (req, res, next) => {
 
     const getPublications = bdd.query(sql, (error, publications) => {
         if (error) {
-            res.status(401).json({ error: "Une erreur est survenue, aucune publication trouvée !" });
+            res.status(400).json({ error: "Une erreur est survenue, aucune publication trouvée !" });
         } else {
             res.status(200).json(publications);
         }
@@ -175,7 +175,7 @@ exports.getMostLikedPublications = (req, res, next) => {
 
     const getPublications = bdd.query(sql, (error, publications) => {
         if (error) {
-            res.status(401).json({ error: "Une erreur est survenue, aucune publication trouvée !" });
+            res.status(400).json({ error: "Une erreur est survenue, aucune publication trouvée !" });
         } else {
             res.status(200).json(publications);
         }
@@ -222,7 +222,7 @@ exports.getMostCommentedPublications = (req, res, next) => {
 
     const getPublications = bdd.query(sql, (error, publications) => {
         if (error) {
-            res.status(401).json({ error: "Une erreur est survenue, aucune publication trouvée !" });
+            res.status(400).json({ error: "Une erreur est survenue, aucune publication trouvée !" });
         } else {
             res.status(200).json(publications);
         }
@@ -264,7 +264,7 @@ exports.getOneUserAllPublications = (req, res, next) => {
 
     const getOneUserAllPublications = bdd.query(sql, (error, publications) => {
         if (error) {
-            res.status(401).json({ error: "Une erreur est survenue, aucune publication trouvée !" });
+            res.status(400).json({ error: "Une erreur est survenue, aucune publication trouvée !" });
         } else {
             res.status(200).json(publications);
         }
@@ -321,7 +321,7 @@ exports.getOnePublication = (req, res, next) => {
         if (!error) {
             res.status(200).json(publication);
         } else {
-            res.status(401).json({ error: "Une erreur est survenue, aucune publication trouvée !" });
+            res.status(400).json({ error: "Une erreur est survenue, aucune publication trouvée !" });
         } 
     });
 };
@@ -350,7 +350,7 @@ exports.deletePublication = (req, res, next) => {
                 }
                 res.status(200).json({ message: "La publication a été supprimée !" + " (" + role + ")" });
             } else {
-                res.status(500).json({ message: "Une erreur est survenue, la publication n'a pas été supprimée" });
+                res.status(400).json({ message: "Une erreur est survenue, la publication n'a pas été supprimée" });
             }
         });
     } else {                                                                    // sinon
@@ -367,12 +367,12 @@ exports.deletePublication = (req, res, next) => {
                     });
                 }
                 if (result.affectedRows === 0) {
-                    res.status(401).json({ message: "Vous n'êtes pas autorisé à supprimer cette publication !" });
+                    res.status(400).json({ message: "Vous n'êtes pas autorisé à supprimer cette publication !" });
                 } else {
                     res.status(200).json({ message: "La publication a été supprimée !" + " (" + role + ")" });
                 }
             } else {
-                res.status(500).json({ message: "Une erreur est survenue, la publication n'a pas été supprimée" });
+                res.status(400).json({ message: "Une erreur est survenue, la publication n'a pas été supprimée" });
             }
         });
     }
@@ -394,7 +394,7 @@ exports.commentPublication = (req, res, next) => {
         if (!error) {
             res.status(201).json({ message: "Le commentaire a bien été créé" });
         } else {
-            res.status(500).json({ message: "Une erreur est survenue, le commentaire n'a pas été créé" });
+            res.status(400).json({ message: "Une erreur est survenue, le commentaire n'a pas été créé" });
         }
     });
 };
@@ -417,7 +417,7 @@ exports.deleteComment = (req, res, next) => {
             if (!error) {
                 res.status(200).json({ message: "Le commentaire a été supprimé !" + " (" + role + ")" });
             } else {
-                res.status(500).json({ message: "Une erreur est survenue, le commentaire n'a pas été supprimé" });
+                res.status(400).json({ message: "Une erreur est survenue, le commentaire n'a pas été supprimé" });
             }
         });
     } else {                                                                    // sinon
@@ -429,12 +429,12 @@ exports.deleteComment = (req, res, next) => {
         const commentaireDelete = bdd.query(sql, (error, result) => {               // envoi de la requête a la base de données
             if (!error) {
                 if (result.affectedRows === 0) {
-                    res.status(401).json({ message: "Vous n'êtes pas autorisé à supprimer ce commentaire !" });
+                    res.status(400).json({ message: "Vous n'êtes pas autorisé à supprimer ce commentaire !" });
                 } else {
                 res.status(200).json({ message: "Le commentaire a été supprimé !" + " (" + role + ")" });
                 }
             } else {
-                res.status(500).json({ message: "Une erreur est survenue, le commentaire n'a pas été supprimé" });
+                res.status(400).json({ message: "Une erreur est survenue, le commentaire n'a pas été supprimé" });
             }
         });
     }
@@ -458,13 +458,13 @@ exports.votePublication = (req, res, next) => {
 
                 const voteNullUpdate = bdd.query(sql, (error, result) => {                          // envoi de la requête a la base de données
                     if (error) {
-                        res.status(401).json({ error: "La modification de votre vote a échouée ! (null)" });
+                        res.status(400).json({ error: "La modification de votre vote a échouée ! (null)" });
                     } else {
                         res.status(200).json({ message: "Votre vote a été modifié avec succès ! (null)" });
                     }
                 });
             } catch (error) {
-                res.status(500).json({ error: "Une erreur est survenue, la modification de votre vote a échouée ! (null)" });
+                res.status(400).json({ error: "Une erreur est survenue, la modification de votre vote a échouée ! (null)" });
             }
             break;
 
@@ -477,7 +477,7 @@ exports.votePublication = (req, res, next) => {
 
                     const voteLikeUpdate = bdd.query(sql, (error, result) => {                              // envoi de la requête a la base de données
                         if (error) {
-                            res.status(401).json({ error: "La modification de votre vote a échouée ! (like)" });
+                            res.status(400).json({ error: "La modification de votre vote a échouée ! (like)" });
                         } else {
                             res.status(200).json({ message: "Votre vote a été modifié avec succès ! (like)" });
                         }
@@ -489,14 +489,14 @@ exports.votePublication = (req, res, next) => {
 
                     const voteLikeUpdate = bdd.query(sql, (error, result) => {                              // envoi de la requête a la base de données
                         if (error) {
-                            res.status(401).json({ error: "La modification de votre vote a échouée ! (like)" });
+                            res.status(400).json({ error: "La modification de votre vote a échouée ! (like)" });
                         } else {
                             res.status(200).json({ message: "Votre vote a été modifié avec succès ! (like)" });
                         }
                     });
                 }
             } catch (error) {
-                res.status(500).json({ error: "Une erreur est survenue, la modification de votre vote a échouée ! (like)" });
+                res.status(400).json({ error: "Une erreur est survenue, la modification de votre vote a échouée ! (like)" });
             }
             break;
 
@@ -509,7 +509,7 @@ exports.votePublication = (req, res, next) => {
 
                     const voteLikeUpdate = bdd.query(sql, (error, result) => {                              // envoi de la requête a la base de données
                         if (error) {
-                            res.status(401).json({ error: "La modification de votre vote a échouée ! (dislike)" });
+                            res.status(400).json({ error: "La modification de votre vote a échouée ! (dislike)" });
                         } else {
                             res.status(200).json({ message: "Votre vote a été modifié avec succès ! (dislike)" });
                         }
@@ -521,14 +521,14 @@ exports.votePublication = (req, res, next) => {
 
                     const voteLikeUpdate = bdd.query(sql, (error, result) => {                              // envoi de la requête a la base de données
                         if (error) {
-                            res.status(401).json({ error: "La modification de votre vote a échouée ! (dislike)" });
+                            res.status(400).json({ error: "La modification de votre vote a échouée ! (dislike)" });
                         } else {
                             res.status(200).json({ message: "Votre vote a été modifié avec succès ! (dislike)" });
                         }
                     });
                 }
             } catch (error) {
-                res.status(500).json({ error: "Une erreur est survenue, la modification de votre vote a échouée ! (dislike)" });
+                res.status(400).json({ error: "Une erreur est survenue, la modification de votre vote a échouée ! (dislike)" });
             }
             break;
     }
