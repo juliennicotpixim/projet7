@@ -277,7 +277,7 @@ exports.getOnePublication = (req, res, next) => {
     const userId = tokenInfos[0];               // on obtient le UserId du token
     const publicationId = req.params.id;        // récupération de l'ID de la publication
 
-    let sqlPublication = `SELECT    user.id AS publicationCreateByUserId,
+    const sqlPublication = `SELECT    user.id AS publicationCreateByUserId,
                                     user.nom AS publicationCreateByUserNom,
                                     user.prenom AS publicationCreateByUserPrenom,
                                     publication.id AS publicationId,
@@ -298,9 +298,9 @@ exports.getOnePublication = (req, res, next) => {
                                     LEFT JOIN commentaires ON publication.id = commentaires.publication_id
                                     LEFT JOIN votes ON publication.id = votes.publication_id
                                     JOIN users AS user ON publication.user_id = user.id
-                                    WHERE publication.id = ? GROUP BY publication.id`;
+                                    WHERE publication.id = ? GROUP BY publication.id;`;
 
-    let sqlCommentaire = `SELECT    user.id AS commentaireCreateByUserId,
+    const sqlCommentaires = `SELECT    user.id AS commentaireCreateByUserId,
                                     user.nom AS commentaireCreateByUserNom,
                                     user.prenom AS commentaireCreateByUserPrenom,
 
@@ -311,16 +311,29 @@ exports.getOnePublication = (req, res, next) => {
                                     FROM commentaires AS commentaire
 
                                     INNER JOIN users AS user ON commentaire.user_id = user.id
-                                    WHERE publication_id = ?`;
+                                    WHERE publication_id = ?;`;
 
-    let inserts = [userId, publicationId, publicationId];                                
-    let sql = `${sqlPublication}; ${sqlCommentaire}`;
-    sql = mysql.format(sql, inserts);
+    const firstInserts = [userId, publicationId];
+    const firstSql = mysql.format(sqlPublication, firstInserts);
 
-    const getOnePublication = bdd.query(sql, (error, publication) => {
+    const secondInserts = [publicationId];
+    const secondSql = mysql.format(sqlCommentaires, secondInserts);
+
+    const getOnePublication = bdd.query(firstSql, (error, result) => {
         if (!error) {
-            res.status(200).json(publication);
+            const publication = result;
+            const getOnePublicationCommentaires = bdd.query(secondSql, (error, result) => {
+                if (!error) {
+                    const commentaires = result;
+                    const finalReponse = {
+                        publication: publication,
+                        commentaires: commentaires
+                    }
+                    res.status(200).json(finalReponse)
+                }
+            });
         } else {
+            console.log(error)
             res.status(400).json({ error: "Une erreur est survenue, aucune publication trouvée !" });
         } 
     });

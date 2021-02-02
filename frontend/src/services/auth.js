@@ -8,7 +8,7 @@ const notConnectedClient = axios.create({...commonConfig })
 const connectedClient = axios.create({...commonConfig })
 
 connectedClient.interceptors.request.use(function(config) {
-    const token = localStorage.getItem('jwt')
+    const token = JSON.parse(localStorage.groupomaniaUser).token
     config.headers = { Authorization: `Bearer ${token}` }
     return config;
 });

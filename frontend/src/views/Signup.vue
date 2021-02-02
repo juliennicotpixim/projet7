@@ -31,54 +31,69 @@
 <script>
 import {notConnectedClient} from "@/services/auth.js"
 
-  export default {
-    name: 'Signup',
+export default {
+  name: 'Signup',
 
-    data() {
-        return {
-            message: "",
-        };
+  data() {
+      return {
+          message: "",
+      };
+  },
+
+  created(){
+  this.connectedUser()
+  },
+
+  methods: {
+    connectedUser(){
+      if(localStorage.groupomaniaUser == undefined){
+        this.approuvedConnexion = false;
+        console.log('Utilisateur non connecté !');
+      } else {
+        this.approuvedConnexion = true;
+        console.log('Utilisateur connecté !');
+        location.href = '/';
+
+      }
     },
 
-    methods: {
-        signup() {
-            const nom = this.$refs.nom.value;
-            const prenom = this.$refs.prenom.value;
-            const email = this.$refs.email.value;
-            const departement = this.$refs.departement.value;
-            const poste = this.$refs.poste.value;
-            const password = this.$refs.password.value;
-            const confirmedPassword = this.$refs.confirmedpassword.value;
+    signup() {
+      const nom = this.$refs.nom.value;
+      const prenom = this.$refs.prenom.value;
+      const email = this.$refs.email.value;
+      const departement = this.$refs.departement.value;
+      const poste = this.$refs.poste.value;
+      const password = this.$refs.password.value;
+      const confirmedPassword = this.$refs.confirmedpassword.value;
 
-            if(password === confirmedPassword){
-
-                notConnectedClient.post("/users/signup", {
-                    nom,
-                    prenom,
-                    email,
-                    departement,
-                    poste, 
-                    password
-                  })
-                  .then((res) => {
-                    if(res.status === 201) {
-                        const groupomaniaUser = {
-                          userId: res.data.userId,
-                          niveau_acces: res.data.niveau_acces,
-                          token: res.data.token
-                        }
-                        localStorage.setItem('groupomaniaUser', JSON.stringify(groupomaniaUser));
-                        location.href = '/';
-                    }
-                  })
-                  .catch((error) => {
-                        this.message = error.response.data.error;
-                  })
-            } else {
-                this.message = "Veuillez confirmer votre mot de passe";
-            }
-        }
+      if(password === confirmedPassword){
+        notConnectedClient.post("/users/signup", {
+          nom,
+          prenom,
+          email,
+          departement,
+          poste, 
+          password
+        })
+        .then((res) => {
+          if(res.status === 201) {
+              const groupomaniaUser = {
+                userId: res.data.userId,
+                niveau_acces: res.data.niveau_acces,
+                token: res.data.token
+              }
+              localStorage.setItem('groupomaniaUser', JSON.stringify(groupomaniaUser));
+              location.href = '/';
+          }
+        })
+        .catch((error) => {
+              this.message = error.response.data.error;
+        })
+      } else {
+        this.message = "Veuillez confirmer votre mot de passe";
+      }
     }
+  }
 }
 </script>
 

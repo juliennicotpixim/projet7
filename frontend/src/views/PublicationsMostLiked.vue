@@ -1,4 +1,10 @@
 <template>
+  <div class="PublicationsMostRecent">
+    <Login v-if="!approuvedConnexion"/>
+    <Header v-if="approuvedConnexion"/>
+    <UserNav v-if="approuvedConnexion"/>
+    <PublicationsNav v-if="approuvedConnexion"/>
+
     <div class="background d-flex flex-column">
         <div v-if="publications.length === 0" class="container-button mx-auto mt-6 mb-15" elevation="24" width="700">
             <div class="mt-15 mb-15 mx-auto text-h4 text-center">Aucune publication trouvée...</div>
@@ -22,44 +28,73 @@
                 </v-list-item-content>
             </v-list-item>
         </v-card>
-
     </div>
+
+  </div>
 </template>
 
 <script>
 import {connectedClient} from "@/services/auth.js"
 
+import Login from '@/components/Login.vue';
+import Header from '@/components/Header.vue';
+import UserNav from '@/components/UserNav.vue';
+import PublicationsNav from '@/components/PublicationsNav.vue';
+
 export default {
-    name: 'Publications',
+  name: 'PublicationsMostLiked',
+  components: {
+    Login,
+    Header,
+    UserNav,
+    PublicationsNav
+  },
 
-    data(){
-        return {
-            publications: []
-        }
-    },
+  data() {
+    return{
+      approuvedConnexion: false,
+      publications: []
+    };
+  },
 
-    mounted() {
-        this.getAllPublications();
-    },
+  created(){
+    this.connectedUser()
+  },
 
-    methods: {
-        getAllPublications(){
-            connectedClient.get("/publications?page=1")
-            .then(res => {
-                this.publications = res.data;
-            })
-        },
-
-        dateFormat(date){
-            const event = new Date(date);
-            const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
-            return event.toLocaleDateString('fr-FR', options);
-        }
+  mounted() {
+    if(this.approuvedConnexion === true) {
+      this.getAllPublications();
     }
+  },
+
+  methods: {
+    connectedUser(){
+      if(localStorage.groupomaniaUser == undefined){
+        this.approuvedConnexion = false;
+        console.log('Utilisateur non connecté !');
+      } else {
+        this.approuvedConnexion = true;
+        console.log('Utilisateur connecté !');
+      }
+    },
+
+    getAllPublications(){
+      connectedClient.get("/publications/most-liked?page=1")
+      .then(res => {
+          this.publications = res.data;
+      })
+    },
+
+    dateFormat(date){
+        const event = new Date(date);
+        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+        return event.toLocaleDateString('fr-FR', options);
+    }
+  }
 }
 </script>
 
-<style scoped>
+<style>
    .background{
       background-image: url(../assets/background-white.jpg);
       background-size: cover;

@@ -2,6 +2,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Signup from '../views/Signup.vue'
+import OnePublication from '../views/OnePublication.vue'
+import OneUserPublications from '../views/OneUserPublications.vue'
+import PublicationsMostRecent from '../views/PublicationsMostRecent.vue'
+import PublicationsMostLiked from '../views/PublicationsMostLiked.vue'
+import PublicationsMostCommented from '../views/PublicationsMostCommented.vue'
 
 Vue.use(VueRouter)
 
@@ -15,6 +20,31 @@ const routes = [
     path: '/signup',
     name: 'Signup',
     component: Signup
+  },
+  {
+    path: '/publication/:id',
+    name: 'OnePublication',
+    component: OnePublication
+  },
+  {
+    path: '/publications/user',
+    name: 'OneUserPublications',
+    component: OneUserPublications
+  },
+  {
+    path: '/publications/most-recent',
+    name: 'PublicationsMostRecent',
+    component: PublicationsMostRecent
+  },
+  {
+    path: '/publications/most-liked',
+    name: 'PublicationsMostLiked',
+    component: PublicationsMostLiked
+  },
+  {
+    path: '/publications/most-commented',
+    name: 'PublicationsMostCommented',
+    component: PublicationsMostCommented
   }
 ]
 
