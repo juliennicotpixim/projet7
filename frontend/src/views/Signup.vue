@@ -73,7 +73,7 @@ export default {
                 token: res.data.token
               }
               localStorage.setItem('groupomaniaUser', JSON.stringify(groupomaniaUser));
-              location.href = '/';
+              this.$router.push({ name:'Home' })
           }
         })
         .catch((error) => {

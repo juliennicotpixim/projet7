@@ -1,6 +1,5 @@
 <template>
   <div class="OnePublication">
-    <Login v-if="!approuvedConnexion"/>
     <Header v-if="approuvedConnexion"/>
     <UserNav v-if="approuvedConnexion"/>
 
@@ -111,7 +110,7 @@ export default {
       if(localStorage.groupomaniaUser == undefined){
         this.approuvedConnexion = false;
         console.log('Utilisateur non connecté !');
-        location.href = '/';
+        this.$router.push({ name:'Home' })
       } else {
         this.approuvedConnexion = true;
         console.log('Utilisateur connecté !');
@@ -158,7 +157,9 @@ export default {
           alreadyVote
         })
           .then(res => {
-            location.reload();
+            this.publication.userVote = 1;
+            this.publication.publicationLikeCount--;
+            this.likeColor = { color: 'black lighten-2' };
           })
       } else {
           if(userVote === null){
@@ -174,7 +175,9 @@ export default {
               alreadyVote
             })
               .then(res => {
-                location.reload();
+                this.publication.userVote = 2;
+                this.publication.publicationLikeCount++;
+                this.likeColor = { color: 'green lighten-2' };
               })
           }
           
@@ -191,7 +194,18 @@ export default {
               alreadyVote
             })
               .then(res => {
-                location.reload();
+                if(userVote === 1){
+                  this.publication.userVote = 2;
+                  this.publication.publicationLikeCount++;
+                  this.likeColor = { color: 'green lighten-2' };
+                }
+                if(userVote === 3){
+                  this.publication.userVote = 2;
+                  this.publication.publicationDislikeCount--;
+                  this.publication.publicationLikeCount++;
+                  this.likeColor = { color: 'green lighten-2' };
+                  this.dislikeColor = { color: 'black lighten-2' };
+                }
               })
           }
         }
@@ -212,7 +226,9 @@ export default {
           alreadyVote
         })
           .then(res => {
-            location.reload();
+            this.publication.userVote = 1;
+            this.publication.publicationDislikeCount--;
+            this.dislikeColor = { color: 'black lighten-2' };
           })
       } else {
           if(userVote === null){
@@ -228,7 +244,9 @@ export default {
               alreadyVote
             })
               .then(res => {
-                location.reload();
+                this.publication.userVote = 3;
+                this.publication.publicationDislikeCount++;
+                this.dislikelikeColor = { color: 'red lighten-2' };
               })
           }
 
@@ -245,7 +263,18 @@ export default {
               alreadyVote
             })
               .then(res => {
-                location.reload();
+                if(userVote === 1){
+                  this.publication.userVote = 3;
+                  this.publication.publicationDislikeCount++;
+                  this.dislikeColor = { color: 'red lighten-2' };
+                }
+                if(userVote === 2){
+                  this.publication.userVote = 3;
+                  this.publication.publicationDislikeCount++;
+                  this.publication.publicationLikeCount--;
+                  this.likeColor = { color: 'black lighten-2' };
+                  this.dislikeColor = { color: 'red lighten-2' };
+                }      
               })
           }
         }

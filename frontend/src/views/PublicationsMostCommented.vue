@@ -1,6 +1,5 @@
 <template>
   <div class="PublicationsMostRecent">
-    <Login v-if="!approuvedConnexion"/>
     <Header v-if="approuvedConnexion"/>
     <UserNav v-if="approuvedConnexion"/>
     <PublicationsNav v-if="approuvedConnexion"/>
@@ -81,7 +80,7 @@ export default {
       if(localStorage.groupomaniaUser == undefined){
         this.approuvedConnexion = false;
         console.log('Utilisateur non connecté !');
-        location.href = '/';
+        this.$router.push({ name:'Home' })
       } else {
         this.approuvedConnexion = true;
         console.log('Utilisateur connecté !');

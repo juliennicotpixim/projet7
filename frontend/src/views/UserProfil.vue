@@ -1,6 +1,5 @@
 <template>
   <div class="UserProfil">
-    <Login v-if="!approuvedConnexion"/>
     <Header v-if="approuvedConnexion"/>
     <UserNav v-if="approuvedConnexion"/>
 
@@ -77,7 +76,7 @@ export default {
       if(localStorage.groupomaniaUser == undefined){
         this.approuvedConnexion = false;
         console.log('Utilisateur non connecté !');
-        location.href = '/';
+        this.$router.push({ name:'Home' })
       } else {
         this.approuvedConnexion = true;
         console.log('Utilisateur connecté !');
@@ -116,7 +115,7 @@ export default {
         if(res.status === 200) {
             this.errorMessage = ""
             this.succesMessage = res.data.message;
-            setTimeout(function() {location.reload()}, 2000)
+            setTimeout(function(){location.reload()}, 2000)
         }
       })
       .catch((error) => {
