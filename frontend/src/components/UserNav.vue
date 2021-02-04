@@ -3,11 +3,11 @@
       <div class="pa-3 mr-auto">Bienvenue chez Groupomania !</div>
       <router-link to="/" id="" tag="button" class="nav-button text-uppercase">Toutes les publications</router-link>
        <v-divider class="my-4 d-none d-sm-flex" vertical></v-divider>
-       <router-link to="/mespublications" id="" tag="button" class="nav-button text-uppercase">Nouvelle publication</router-link>
+       <router-link to="/newpublication" id="" tag="button" class="nav-button text-uppercase">Nouvelle publication</router-link>
        <v-divider class="my-4 d-none d-sm-flex" vertical></v-divider>
       <router-link to="/publications/user" id="" tag="button" class="nav-button text-uppercase">Mes publications</router-link>
        <v-divider class="my-4 d-none d-sm-flex" vertical></v-divider>
-      <router-link to="/profil" id="" tag="button" class="nav-button text-uppercase">Profil</router-link>
+      <router-link to="/user/profil" id="" tag="button" class="nav-button text-uppercase">Profil</router-link>
        <v-divider class="my-4 d-none d-sm-flex" vertical></v-divider>
       <button v-on:click="deconnexion()" class="nav-button text-uppercase">Déconnexion</button>
     </v-card>
@@ -19,7 +19,7 @@ export default {
     name: 'UserNav',
 
     methods: {
-        deconnexion(){
+        deconnexion(){                                      // fonction qui supprime la session utilisateur (item du localStorage)
             localStorage.removeItem('groupomaniaUser');
             location.href = '/';
         }

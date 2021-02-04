@@ -35,8 +35,6 @@ exports.signup = (req, res, next) => {
                     if (!error) {                                               // si aucune erreur après la requête
                         res.status(201).json({                                  // on retourne
                             message: "L'utilisateur a été créé avec succès !",  // on renvoi un message de confirmation
-                            userId: user.insertId,                              // on renvoi son UserId
-                            niveau_acces: 0,                                    // on renvoi le niveau d'accès basique
                             token: jwt.sign(                                    // fonction sign qui prend les données que nous allons encoder à l'intérieur du token
                                 { userId: user.insertId, niveau_acces: 0 },     // création d'un objet avec le UserId et le niveau d'acces pour être sur de la correspondance
                                 process.env.JWT_AUTH_SECRET_TOKEN,              // clé secrète pour l'encodage
@@ -80,8 +78,6 @@ exports.login = (req, res, next) => {
 
                 res.status(200).json({                                                  // si la connexion est approuvée on retourne
                     message: "Vous êtes désormais connecté !",                          // on renvoi un message de confirmation                                      
-                    userId: user[0].id,                                                 // on renvoi son UserId
-                    niveau_acces: user[0].niveau_acces,                                 // on renvoi son niveau d'acces
                     token: jwt.sign(                                                    // fonction sign qui prend les données que nous allons encoder à l'intérieur du token
                         { userId: user[0].id, niveau_acces: user[0].niveau_acces },     // création d'un objet avec le UserId et le niveau d'acces pour être sur de la correspondance
                         process.env.JWT_AUTH_SECRET_TOKEN,                              // clé secrète pour l'encodage

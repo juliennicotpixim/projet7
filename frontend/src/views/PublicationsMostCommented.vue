@@ -5,7 +5,7 @@
     <UserNav v-if="approuvedConnexion"/>
     <PublicationsNav v-if="approuvedConnexion"/>
 
-    <div class="background d-flex flex-column">
+    <div v-if="approuvedConnexion" class="background d-flex flex-column">
       <div v-if="publications.length === 0" class="container-button mx-auto mt-6 mb-15" elevation="24" width="700">
         <div class="mt-15 mb-15 mx-auto text-h4 text-center">Aucune publication trouvée...</div>
       </div>
@@ -28,8 +28,12 @@
                 </v-list-item-content>
             </v-list-item>
         </v-card>
-    </div>
 
+        <div class="container-button-pagination mx-auto mt-6 mb-15">
+              <button v-if="this.page > 1" v-on:click="pagePrecedente()" id="btn-pagination" type="button" class="mx-5">Page précédente</button>
+              <button v-if="this.publicationsTotalPageCount < this.publicationsCount" v-on:click="pageSuivante()" id="btn-pagination" type="button" class="mx-5">Page suivante</button>
+        </div>
+    </div>
   </div>
 </template>
 
@@ -43,7 +47,8 @@ import PublicationsNav from '@/components/PublicationsNav.vue';
 
 export default {
   name: 'PublicationsMostCommented',
-  components: {
+  
+  components: {     // déclaration des composants utilisés par la Vue
     Login,
     Header,
     UserNav,
@@ -52,8 +57,12 @@ export default {
 
   data() {
     return{
-      approuvedConnexion: false,
-      publications: []
+      approuvedConnexion: false,          // on déclare une varibale de type boléen, false par défault (contiendra la validation comme quoi un utilisateur est authentifié)
+      publications: [],
+      publicationsCount: 0,
+      publicationsPageCount: 0,
+      publicationsTotalPageCount: 0,
+      page: 1
     };
   },
 
@@ -68,10 +77,11 @@ export default {
   },
 
   methods: {
-    connectedUser(){
+    connectedUser(){                                    // fonction de vérification de la session utilisateur (Item dans le localStorage)
       if(localStorage.groupomaniaUser == undefined){
         this.approuvedConnexion = false;
         console.log('Utilisateur non connecté !');
+        location.href = '/';
       } else {
         this.approuvedConnexion = true;
         console.log('Utilisateur connecté !');
@@ -79,10 +89,39 @@ export default {
     },
 
     getAllPublications(){
-      connectedClient.get("/publications/most-commented?page=1")
+      connectedClient.get(`/publications/most-commented?page=${this.page}`)
       .then(res => {
-          this.publications = res.data;
+          this.publications = res.data[0];
+          this.publicationsPageCount = res.data[0].length;
+          this.publicationsTotalPageCount = this.publicationsTotalPageCount + this.publicationsPageCount;
+          this.publicationsCount = res.data[1][0]["COUNT(*)"];
       })
+    },
+        
+    pageSuivante(){
+      if(this.publicationsTotalPageCount < this.publicationsCount){
+        this.page++;
+        connectedClient.get(`/publications/most-commented?page=${this.page}`)
+          .then(res => {
+            this.publications = res.data[0];
+            this.publicationsPageCount = res.data[0].length;
+            this.publicationsTotalPageCount = this.publicationsTotalPageCount + this.publicationsPageCount;
+            this.publicationsCount = res.data[1][0]["COUNT(*)"];
+          })
+      }
+    },
+
+    pagePrecedente(){
+      if(this.page > 1){
+        this.page--;
+        this.publicationsTotalPageCount = this.publicationsTotalPageCount - this.publicationsPageCount;
+        connectedClient.get(`/publications/most-commented?page=${this.page}`)
+          .then(res => {
+            this.publications = res.data[0];
+            this.publicationsPageCount = res.data[0].length;
+            this.publicationsCount = res.data[1][0]["COUNT(*)"];
+          })
+      }
     },
 
     dateFormat(date){
@@ -125,5 +164,19 @@ export default {
 
     .router-link{
         text-decoration:none;
+    }
+
+    #btn-pagination{
+        padding: 6px 12px;
+        font-size: 1.5rem;
+        color: black;
+        background-color: #fe7d55;
+        border: none;
+        border-radius: 10px;
+        transition-duration: 0.2s;
+    }
+
+    #btn-pagination:hover{
+        transform: scale(1.1);
     }
 </style>

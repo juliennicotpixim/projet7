@@ -1,13 +1,9 @@
 <template>
   <div class="background">
     <div class="container mx-auto">
-
         <img src="../assets/icon-above-font.svg" alt="Groupomania logo">
-        
         <form @submit.prevent = signup()>
-
             <div class="mb-2">Champs requis (*)</div>
-
             <input id="nom" ref="nom" type="text" placeholder="Nom">
             <input id="prenom" ref="prenom" type="text" placeholder="Prénom">
             <input id="email" ref="email" type="email" placeholder="E-mail (*)" required>
@@ -15,14 +11,11 @@
             <input id="poste" ref="poste" type="text" placeholder="Poste occupé">
             <input id="password" ref="password" type="password" placeholder="Mot de passe (*)" required>
             <input id="confirmedpassword" ref="confirmedpassword" type="password" placeholder="Confirmer mot de passe (*)" required>
-
             <div class="message-erreur">{{ message }}</div>
-
-            <div class="container-button mx-auto mt-6 mb-15">
+            <div class="mx-auto mt-6 mb-15">
               <button id="signup" type="submit" class="mx-5">Inscription</button>
               <router-link to="/" id="login" tag="button" class="mx-5">Connexion</router-link>
             </div>
-
         </form>
     </div>
   </div>
@@ -45,7 +38,7 @@ export default {
   },
 
   methods: {
-    connectedUser(){
+    connectedUser(){                                    // fonction de vérification de la session utilisateur (Item dans le localStorage)
       if(localStorage.groupomaniaUser == undefined){
         this.approuvedConnexion = false;
         console.log('Utilisateur non connecté !');
@@ -53,11 +46,10 @@ export default {
         this.approuvedConnexion = true;
         console.log('Utilisateur connecté !');
         location.href = '/';
-
       }
     },
 
-    signup() {
+    signup() {                                        // fonction qui gère la création d'un nouvel utilisateur (requête)
       const nom = this.$refs.nom.value;
       const prenom = this.$refs.prenom.value;
       const email = this.$refs.email.value;
@@ -66,7 +58,7 @@ export default {
       const password = this.$refs.password.value;
       const confirmedPassword = this.$refs.confirmedpassword.value;
 
-      if(password === confirmedPassword){
+      if(password === confirmedPassword){             // on vérifie que le mot de passe est confirmé
         notConnectedClient.post("/users/signup", {
           nom,
           prenom,
@@ -76,10 +68,8 @@ export default {
           password
         })
         .then((res) => {
-          if(res.status === 201) {
-              const groupomaniaUser = {
-                userId: res.data.userId,
-                niveau_acces: res.data.niveau_acces,
+          if(res.status === 201) {                    // si l'inscription s'est bien déroulée, on créer l'item dans le localStorage pour créer la session utilisateur
+              const groupomaniaUser = {               
                 token: res.data.token
               }
               localStorage.setItem('groupomaniaUser', JSON.stringify(groupomaniaUser));
@@ -97,7 +87,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
     .background{
       background-image: url(../assets/background-white.jpg);
       background-size: cover;
@@ -129,12 +119,6 @@ export default {
         background-color: white;
         border: 1px rgba(0, 0, 0, 0.548) solid;
         border-radius: 15px;
-    }
-
-    .container-button{
-          display: flex;
-          justify-content: space-around;
-          align-items: baseline;
     }
 
     #signup{

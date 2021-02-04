@@ -4,10 +4,10 @@
     <Header v-if="approuvedConnexion"/>
     <UserNav v-if="approuvedConnexion"/>
 
-    <div class="background d-flex flex-column">
+    <div v-if="approuvedConnexion" class="background d-flex flex-column pb-15">
       <div v-if="publications.length === 0" class="container-button mx-auto mt-6 mb-15" elevation="24" width="700">
         <div class="mt-15 mb-15 mx-auto text-h4 text-center">Aucune publication trouvée...</div>
-        <router-link to="/" id="creer" class="mx-5" tag="button">Créer une nouvelle publication !</router-link>
+        <router-link to="/newpublication" id="creer" class="mx-5" tag="button">Créer une nouvelle publication !</router-link>
       </div>
         <v-card class="mx-auto mt-8" v-for = "publication in publications" :key="publication.publicationId" elevation="24" width="700">
             <v-list-item five-line class="px-0 py-0">
@@ -43,7 +43,8 @@ import PublicationsNav from '@/components/PublicationsNav.vue';
 
 export default {
   name: 'OneUserPublications',
-  components: {
+
+  components: {     // déclaration des composants utilisés par la Vue
     Login,
     Header,
     UserNav,
@@ -52,9 +53,8 @@ export default {
 
   data() {
     return{
-      approuvedConnexion: false,
-      publications: [],
-      visible: false
+      approuvedConnexion: false,          // on déclare une varibale de type boléen, false par défault (contiendra la validation comme quoi un utilisateur est authentifié)
+      publications: []
     };
   },
 
@@ -69,10 +69,11 @@ export default {
   },
 
   methods: {
-    connectedUser(){
+    connectedUser(){                                    // fonction de vérification de la session utilisateur (Item dans le localStorage)
       if(localStorage.groupomaniaUser == undefined){
         this.approuvedConnexion = false;
         console.log('Utilisateur non connecté !');
+        location.href = '/';
       } else {
         this.approuvedConnexion = true;
         console.log('Utilisateur connecté !');

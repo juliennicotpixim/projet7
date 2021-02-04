@@ -26,4 +26,4 @@ module.exports = multer({ storage: storage,                     // méthode mult
         }
         callback(null, true)
     }
-}).single('image');       
+}).single('image');

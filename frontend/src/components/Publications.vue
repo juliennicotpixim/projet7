@@ -22,35 +22,71 @@
                 </v-list-item-content>
             </v-list-item>
         </v-card>
-
+        <div class="container-button-pagination mx-auto mt-6 mb-15">
+              <button v-if="this.page > 1" v-on:click="pagePrecedente()" id="btn-pagination" type="button" class="mx-5">Page précédente</button>
+              <button v-if="this.publicationsTotalPageCount < this.publicationsCount" v-on:click="pageSuivante()" id="btn-pagination" type="button" class="mx-5">Page suivante</button>
+        </div>
     </div>
 </template>
 
 <script>
-import {connectedClient} from "@/services/auth.js"
+import {connectedClient} from "@/services/auth.js"      // importation de la configuration de requête pour un client connecté
 
 export default {
     name: 'Publications',
 
     data(){
         return {
-            publications: []
+            publications: [],                           // on déclare une varibale de type tableau, vide par défault (contiendra les 10 publications)
+            publicationsCount: 0,                       // on déclare une varibale de type nombre, null par défault (contiendra le nombre de publications dans la base de données)
+            publicationsPageCount: 0,                   // on déclare une varibale de type tableau, null par défault (contiendra le nombre de publication sur la page)
+            publicationsTotalPageCount: 0,              // on déclare une varibale de type tableau, null par défault (contiendra le nombre de publication déjà vu en fonction de la page)
+            page: 1                                     // on déclare une varibale de type tableau, 1 par défault (contiendra le numéro de la page)
         }
     },
 
-    mounted() {
-        this.getAllPublications();
+    mounted() {                                         // hook de cycle de vie qui intervient après le hook created de vérification de session
+        this.getAllPublications();                      // fonction qui récupère les publications
     },
 
     methods: {
         getAllPublications(){
-            connectedClient.get("/publications?page=1")
+            connectedClient.get(`/publications?page=${this.page}`)          // requête page 1
             .then(res => {
-                this.publications = res.data;
+                this.publications = res.data[0];                            // récupération des publications
+                this.publicationsPageCount = res.data[0].length;            // récupération du nombre de publications reçu
+                this.publicationsTotalPageCount = this.publicationsTotalPageCount + this.publicationsPageCount;     // calcul du nombre de publication déjà vu (en fonction des pages précédentes)
+                this.publicationsCount = res.data[1][0]["COUNT(*)"];                                                // récupération du nombre totale de publications dans la bdd
             })
         },
+        
+        pageSuivante(){                                                         // fonction qui récupère la page suivante
+            if(this.publicationsTotalPageCount < this.publicationsCount){       // même traitement que AllPublication avec une page différente
+                this.page++;
+                connectedClient.get(`/publications?page=${this.page}`)
+                    .then(res => {
+                        this.publications = res.data[0];
+                        this.publicationsPageCount = res.data[0].length;
+                        this.publicationsTotalPageCount = this.publicationsTotalPageCount + this.publicationsPageCount;
+                        this.publicationsCount = res.data[1][0]["COUNT(*)"];
+                    })
+            }
+        },
 
-        dateFormat(date){
+        pagePrecedente(){                                                       // fonction qui récupère la page précédente
+            if(this.page > 1){                                                  // même traitement que AllPublication avec une page différente
+                this.page--;
+                this.publicationsTotalPageCount = this.publicationsTotalPageCount - this.publicationsPageCount;
+                connectedClient.get(`/publications?page=${this.page}`)
+                    .then(res => {
+                        this.publications = res.data[0];
+                        this.publicationsPageCount = res.data[0].length;
+                        this.publicationsCount = res.data[1][0]["COUNT(*)"];
+                    })
+            }
+        },
+
+        dateFormat(date){                                                       // fonction qui transforme le format de la date reçu pour un meilleur affichage
             const event = new Date(date);
             const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
             return event.toLocaleDateString('fr-FR', options);
@@ -90,5 +126,26 @@ export default {
 
     .router-link{
         text-decoration:none;
+    }
+
+    #btn-pagination{
+        padding: 6px 12px;
+        font-size: 1.5rem;
+        color: black;
+        background-color: #fe7d55;
+        border: none;
+        border-radius: 10px;
+        transition-duration: 0.2s;
+    }
+
+    #btn-pagination:hover{
+        transform: scale(1.1);
+    }
+
+    .container-button-pagination{
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          align-items: baseline;
     }
 </style>

@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Signup from '../views/Signup.vue'
 import OnePublication from '../views/OnePublication.vue'
+import NewPublication from '../views/NewPublication.vue'
+import UserProfil from '../views/UserProfil.vue'
 import OneUserPublications from '../views/OneUserPublications.vue'
 import PublicationsMostRecent from '../views/PublicationsMostRecent.vue'
 import PublicationsMostLiked from '../views/PublicationsMostLiked.vue'
@@ -30,6 +32,16 @@ const routes = [
     path: '/publications/user',
     name: 'OneUserPublications',
     component: OneUserPublications
+  },
+  {
+    path: '/user/profil',
+    name: 'UserProfil',
+    component: UserProfil
+  },
+  {
+    path: '/newpublication',
+    name: 'NewPublication',
+    component: NewPublication
   },
   {
     path: '/publications/most-recent',

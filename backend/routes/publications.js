@@ -7,7 +7,7 @@ const auth = require('../middleware/auth');      // importation de notre middlew
 const multer = require('../middleware/multer-config');       // importation de notre middleware multer
 
 
-router.post('/', auth, publicationsCtrl.createPublication);                             // Création d'une publication
+router.post('/', auth, multer, publicationsCtrl.createPublication);                             // Création d'une publication
 
 router.get("/", auth, publicationsCtrl.getAllPublications);                             // Récupération de toutes les publications
 

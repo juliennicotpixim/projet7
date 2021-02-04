@@ -2,14 +2,11 @@
   <div class="background">
     <div class="container mx-auto">
         <img src="../assets/icon-above-font.svg" alt="Groupomania logo">
-        
         <form @submit.prevent = login()>
             <div class="mb-2">Champs requis (*)</div>
             <input id="email" ref="email" type="email" placeholder="E-mail (*)" required>
             <input id="password" ref="password" type="password" placeholder="Mot de passe (*)" required>
-
             <div class="message-erreur">{{ message }}</div>
-
             <div class="container-button mx-auto mt-6 mb-15">
               <button id="login" type="submit" class="mx-5">Connexion</button>
               <router-link :to="{name:'Signup'}" id="signup" class="mx-5" tag="button">Inscription</router-link>
@@ -20,40 +17,38 @@
 </template>
 
 <script>
-import {notConnectedClient} from "@/services/auth.js"
+import {notConnectedClient} from "@/services/auth.js"           // importation de la configuration de requête pour un client non connecté
 
-  export default {
+export default {
     name: 'Login',
 
     data() {
         return {
-            message: "",
+            message: "",                                        // on déclare une varibale de type string, vide par défault (contiendra les messages d'erreur envoyé par le back)
         };
     },
 
     methods: {
-        login() {
+        login() {                                               // fonction de connexion
             const email = this.$refs.email.value;
             const password = this.$refs.password.value;
 
-            notConnectedClient.post("/users/login", {
+            notConnectedClient.post("/users/login", {           // envoi de la requête non authentifié avec notConnectedClient
                 email,
                 password
-              })
-              .then((res) => {
-                if(res.status === 200) {
-                    const groupomaniaUser = {
-                      userId: res.data.userId,
-                      niveau_acces: res.data.niveau_acces,
-                      token: res.data.token
-                    }
-                    localStorage.setItem('groupomaniaUser', JSON.stringify(groupomaniaUser));
-                    location.reload();
+            })
+            .then((res) => {
+            if(res.status === 200) {                            // si la requête est validée
+                const groupomaniaUser = {
+                    token: res.data.token
                 }
-              })
-              .catch((error) => {
-                    this.message = error.response.data.error;
-              })
+                localStorage.setItem('groupomaniaUser', JSON.stringify(groupomaniaUser));   //on stockant dans le localStorage un item avec le token
+                location.reload();                                                          // rechargement de la page pour re-analyser le localStorage
+            }
+            })
+            .catch((error) => {
+                this.message = error.response.data.error;       // si la requête a échouée, on affiche le message d'erreur envoyé par le back
+            })
         }
     }
 }
@@ -95,6 +90,7 @@ import {notConnectedClient} from "@/services/auth.js"
 
     .container-button{
           display: flex;
+          flex-direction: row;
           justify-content: space-around;
           align-items: baseline;
     }
