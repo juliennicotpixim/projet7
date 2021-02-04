@@ -138,6 +138,11 @@ export default {
         border: 1px rgba(0, 0, 0, 0.548) solid;
         border-radius: 15px;
     }
+    
+    form input::placeholder{
+        color: #585858;
+        font-weight: 500;
+    }
 
     .container-button{
           display: flex;
