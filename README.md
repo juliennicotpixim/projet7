@@ -72,3 +72,11 @@ __lancement du serveur__
 -   Pour vérifier qu'aucune faille de sécurité lié aux dépendances de notre application n'a été découverte, exécutez la commande `npm audit` à la fois côté `backend` et `frontend`.
 
 -   Si le scan montre une ou plusieurs vulnérabilités, exécutez la commande `npm audit --fix` qui met à jour les dépendances avec de nouveaux patchs de sécurité.
+
+
+
+### Annexe
+
+-   Les `annexe` du projet vous permettent d'accéder aux différentes étapes de création du projet.
+
+-   Une `documentation API` a été créée pour faciliter le développement, la compréhension et la futur maintenance de l'application.
