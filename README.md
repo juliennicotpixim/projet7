@@ -23,7 +23,7 @@ __installation__
                 SQL_BDD_PASSWORD = root
                 SQL_BDD_NAME = groupomania    
 
--   Toujours dans ce même fichier `(backend/).env`, entrez une clé secrète qui sera utilisée pour encoder et décoder nles tokens d'authenfications, entrez aussi une durée en heures avant l'expiration des tokens d'authentifications.
+-   Toujours dans ce même fichier `(backend/).env`, entrez une clé secrète qui sera utilisée pour encoder et décoder les tokens d'authenfications, entrez aussi une durée en heure avant l'expiration des tokens d'authentifications.
 
     Exemple :   JWT_AUTH_SECRET_TOKEN=56E4RH54ER654HEYERLKKJKGKGPME
                 JWT_EXPIRATION=24h
