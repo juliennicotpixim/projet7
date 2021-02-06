@@ -8,7 +8,7 @@
 
 Technos utilisées : **Node.js** / **Express.js** / **MySQL** (service de base de données)
 
-Packages utilisés : **packages.json**
+Packages utilisés : **voir backend/packages.json**
 
 __installation__
 
@@ -40,7 +40,7 @@ __lancement du serveur__
 
 Technos utilisées : **Vue.js**
 
-Packages utilisés : **packages.json**
+Packages utilisés : **voir frontend/packages.json**
 
 __installation__
 
