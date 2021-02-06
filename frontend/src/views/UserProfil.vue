@@ -6,14 +6,14 @@
     <div v-if="approuvedConnexion" class="background d-flex flex-column">
         <form id="profil" @submit.prevent = saveUser()>
             <div class="mb-5 mt-15 mx-auto text-h6">Informations personnelles :</div>
-            <input id="nom" ref="nom" type="text" placeholder="Nom" :value="userProfil.nom">
-            <input id="prenom" ref="prenom" type="text" placeholder="Prénom" :value="userProfil.prenom">
-            <input id="email" ref="email" type="email" placeholder="E-mail (*)" :value="userProfil.email" required>
-            <input id="departement" ref="departement" type="text" placeholder="N° de département" :value="userProfil.departement">
-            <input id="poste" ref="poste" type="text" placeholder="Poste occupé" :value="userProfil.poste">
+            <input id="nom" ref="nom" type="text" title="Renseignez votre nom" placeholder="Nom" :value="userProfil.nom">
+            <input id="prenom" ref="prenom" type="text" title="Renseignez votre prénom" placeholder="Prénom" :value="userProfil.prenom">
+            <input id="email" ref="email" type="email" title="Renseignez votre email" placeholder="E-mail (*)" :value="userProfil.email" required>
+            <input id="departement" ref="departement" title="Renseignez votre numéro de département" type="text" placeholder="N° de département" :value="userProfil.departement">
+            <input id="poste" ref="poste" type="text" title="Renseignez votre poste" placeholder="Poste occupé" :value="userProfil.poste">
             <div class="mb-5 mt-8 mx-auto text-h6">Modifier mon mot de passe :</div>
-            <input id="password" ref="password" type="password" placeholder="Mot de passe actuel">
-            <input id="newpassword" ref="newpassword" type="password" placeholder="Nouveau mot de passe">
+            <input id="password" ref="password" type="password" title="Renseignez votre mot de passe actuel" placeholder="Mot de passe actuel">
+            <input id="newpassword" ref="newpassword" type="password" title="Renseignez votre nouveau mot de passe" placeholder="Nouveau mot de passe">
             <div class="message-erreur mt-10">{{ errorMessage }}</div>
             <div class="message-succes">{{ succesMessage }}</div>
             <div class="mx-auto mb-15 container-button-profil">

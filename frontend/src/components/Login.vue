@@ -4,8 +4,8 @@
         <img src="../assets/icon-above-font.svg" alt="Groupomania logo">
         <form @submit.prevent = login()>
             <div class="mb-2">Champs requis (*)</div>
-            <input id="email" ref="email" type="email" placeholder="E-mail (*)" required>
-            <input id="password" ref="password" type="password" placeholder="Mot de passe (*)" required>
+            <input id="email" ref="email" type="email" placeholder="E-mail (*)" title="Renseignez votre email" required>
+            <input id="password" ref="password" type="password" placeholder="Mot de passe (*)" title="Renseignez votre mot de passe" required>
             <div class="message-erreur">{{ message }}</div>
             <div class="container-button mx-auto mt-6 mb-15">
               <button id="login" type="submit" class="mx-5">Connexion</button>

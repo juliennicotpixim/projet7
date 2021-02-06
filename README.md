@@ -77,6 +77,6 @@ __lancement du serveur__
 
 ### Annexe
 
--   Les `annexe` du projet vous permettent d'accéder aux différentes étapes de création du projet.
+-   Les `annexes` du projet vous permettent d'accéder aux différentes étapes de création du projet.
 
--   Une `documentation API` a été créée pour faciliter le développement, la compréhension et la futur maintenance de l'application.
+-   Une `documentation API` a été créée pour faciliter le développement, la compréhension et la maintenance de l'application.

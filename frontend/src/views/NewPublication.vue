@@ -6,9 +6,9 @@
     <div v-if="approuvedConnexion" class="background d-flex flex-column">
       <form @submit.prevent = newPublication()>
         <div class="mb-2 mt-15 ml-15">Champs requis (*)</div>
-        <textarea id="titre" class="mt-5" ref="titre" name="titre" placeholder="Titre de la publication... (*)" required></textarea>
-        <textarea id="description" class="mt-5" ref="description" name="description" placeholder="Description de la publication... (*)" required></textarea>
-        <input type="file" class="mt-5" accept="image/jpg,image/jpeg,image/png" ref="uploadImage" id="uploadImage"/>
+        <textarea id="titre" class="mt-5" ref="titre" name="titre" placeholder="Titre de la publication... (*)" title="Renseignez un titre pour votre publication" required></textarea>
+        <textarea id="description" class="mt-5" ref="description" name="description" placeholder="Description de la publication... (*)" title="Renseignez une description pour votre publication" required></textarea>
+        <input type="file" class="mt-5" accept="image/jpg,image/jpeg,image/png" ref="uploadImage" id="uploadImage" title="Renseignez une image pour votre publication"/>
         <div class="message-erreur">{{ message }}</div>
         <div class="mx-auto mt-6 mb-15">
           <button id="newpublication" type="submit" class="mx-5">Créer la publication</button>

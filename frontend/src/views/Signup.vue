@@ -4,13 +4,13 @@
         <img src="../assets/icon-above-font.svg" alt="Groupomania logo">
         <form @submit.prevent = signup()>
             <div class="mb-2">Champs requis (*)</div>
-            <input id="nom" ref="nom" type="text" placeholder="Nom">
-            <input id="prenom" ref="prenom" type="text" placeholder="Prénom">
-            <input id="email" ref="email" type="email" placeholder="E-mail (*)" required>
-            <input id="departement" ref="departement" type="text" placeholder="N° de département">
-            <input id="poste" ref="poste" type="text" placeholder="Poste occupé">
-            <input id="password" ref="password" type="password" placeholder="Mot de passe (*)" required>
-            <input id="confirmedpassword" ref="confirmedpassword" type="password" placeholder="Confirmer mot de passe (*)" required>
+            <input id="nom" ref="nom" type="text" placeholder="Nom"  title="Renseignez votre nom">
+            <input id="prenom" ref="prenom" type="text" placeholder="Prénom" title="Renseignez votre prénom">
+            <input id="email" ref="email" type="email" placeholder="E-mail (*)" required title="Renseignez votre email">
+            <input id="departement" ref="departement" type="text" placeholder="N° de département" title="Renseignez votre numéro de département">
+            <input id="poste" ref="poste" type="text" placeholder="Poste occupé" title="Renseignez votre poste">
+            <input id="password" ref="password" type="password" placeholder="Mot de passe (*)" title="Renseignez votre mot de passe" required>
+            <input id="confirmedpassword" ref="confirmedpassword" type="password" placeholder="Confirmer mot de passe (*)" title="Renseignez votre mot de passe de nouveau" required>
             <div class="message-erreur">{{ message }}</div>
             <div class="mx-auto mt-6 mb-15">
               <button id="signup" type="submit" class="mx-5">Inscription</button>
