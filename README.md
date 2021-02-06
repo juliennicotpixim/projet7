@@ -1,4 +1,4 @@
-# Projet numéro 7 : Créez un réseau social d’entreprise >>>
+# Projet numéro 7 : Créez un réseau social d’entreprise
 
 ## Installation de la première version de l'application Groupomania
 
