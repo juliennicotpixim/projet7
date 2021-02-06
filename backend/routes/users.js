@@ -1,4 +1,4 @@
-var bouncer = require ("express-bouncer")(500, 900000);     // importation du paquet express-bouncer pour luter contre attaques par force brute
+const bouncer = require ("express-bouncer")(500, 900000);     // importation du paquet express-bouncer pour luter contre attaques par force brute
 const express = require('express');     // importation du paquet express
 const router = express.Router();        // création du router
 
