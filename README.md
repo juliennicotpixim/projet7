@@ -32,7 +32,7 @@ __installation__
 
 __lancement du serveur__
 
--   Exécutez la commande `nodemon server` pour lancer le serveur.
+-   Exécutez la commande `nodemon server` pour lancer le serveur de développement.
 
 
 
@@ -54,7 +54,7 @@ __installation__
 
 __lancement du serveur__
 
--   Exécutez la commande `npm run serve` pour lancer le serveur.
+-   Exécutez la commande `npm run serve` pour lancer le serveur de développement.
 
 
 ### Modération
